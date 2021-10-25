@@ -20,15 +20,31 @@ public class UserOpsController {
     @Autowired
     private MongoOperations mongoOperations = Utilities.GetMongoTemplate();
 
-    @PostMapping(value = "/signup")
+    @GetMapping(value = "/signup")
     public String signUp(String userName, String password) {
         if (mongoOperations.findById(userName, User.class) != null) {
-            return "null";
+            return "用户名已被注册";
         }
-        //* 密码的保存需要重新写一下
-        User user = new User(userName, password, false);
+
+        //* 将password通过base64加密之后再存储
+        String encodedPassword = Utilities.encodeBase64Password(password);
+        User user = new User(userName, encodedPassword, false);
         mongoOperations.insert(user);
         return "ok";
+    }
+
+    @GetMapping(value = "/login")
+    public String login(String userName, String password) {
+        User user = mongoOperations.findById(userName, User.class);
+        if (user == null) {
+            return "user name not found";
+        }
+
+        String decodedPassword = Utilities.decodeBase64Password(user.getPassword());
+        if (decodedPassword.equals(password)) {
+            return "password right!";
+        }
+        return "password not right";
     }
 
     // 没啥用，只是用来测试一下罢了
