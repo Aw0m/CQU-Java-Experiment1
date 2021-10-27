@@ -3,7 +3,11 @@ package com.example.javaexperiment.dao;
 import com.example.javaexperiment.models.User;
 import com.example.javaexperiment.utils.Utilities;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.data.mongodb.core.MongoOperations;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 //import java.util.List;
 
@@ -44,7 +48,11 @@ public class UserDao {
         return mongoOperations.findById(userName, User.class);
     }
 
-    public void updateUser() {
-
+    public void updateUser(String userName, String password) {
+        UpdateResult updateResult = mongoOperations.updateFirst(
+                query(where("userName").is(userName)),
+                update("password", password),
+                User.class
+        );
     }
 }
