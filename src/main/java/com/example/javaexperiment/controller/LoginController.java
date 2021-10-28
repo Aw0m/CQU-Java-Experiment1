@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserOpsController {
+public class LoginController {
     @Autowired
     private MongoOperations mongoOperations = Utilities.GetMongoTemplate();
 
