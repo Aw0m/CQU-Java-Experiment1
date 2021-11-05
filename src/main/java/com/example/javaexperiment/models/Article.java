@@ -25,8 +25,8 @@ public class Article {
     private List<Comment> commentList;
     private Integer commentsNum;
 
-    public Article(String writerName, String articleTitle, String articleContent, Integer articlesNum) {
-        this.articleID = writerName + articlesNum.toString();
+    public Article(String articleID, String articleTitle, String articleContent, String writerName) {
+        this.articleID = articleID;
         this.writerName = writerName;
         this.articleContent = articleContent;
         this.articleTitle = articleTitle;

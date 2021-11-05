@@ -56,10 +56,10 @@ public class JWTUtils {
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
             res.put("tokenJudge", "ok");
-            res.put("userName", jwt.getClaim("userName").toString());
-            res.put("password", jwt.getClaim("password").toString());
+            res.put("userName", jwt.getClaim("userName").asString());
+            res.put("password", jwt.getClaim("password").asString());
         } catch (JWTVerificationException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             res.put("tokenJudge", "false");
             res.put("userName", null);
             res.put("password", null);

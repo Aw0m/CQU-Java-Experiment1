@@ -24,7 +24,7 @@ public abstract class UserDao {
         if (mongoOperations.findById(user.getUserName(), User.class) != null) {
             return false;
         }
-        mongoOperations.insert(user);
+        mongoOperations.insert(user, "user");
         return true;
     }
 
@@ -43,5 +43,9 @@ public abstract class UserDao {
                 update("password", password),
                 User.class
         );
+    }
+
+    public static void saveUser(User user) {
+        mongoOperations.save(user, "user");
     }
 }

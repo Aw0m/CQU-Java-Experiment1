@@ -1,13 +1,12 @@
 package com.example.javaexperiment.controller;
 
+import com.example.javaexperiment.models.Article;
 import com.example.javaexperiment.service.PublishService;
 import com.example.javaexperiment.utils.JWTUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Awom
@@ -15,13 +14,16 @@ import java.util.HashMap;
  */
 
 @RestController
+@CrossOrigin
 @RequestMapping("/articles")
 public class PublishController {
     static HashMap<String, String> tokenInfo;
     static PublishService publishService = new PublishService();
 
-    @GetMapping("/new_article")
-    public String newArticle(@RequestHeader(value = "Authorization", required = false) String token, String articleTitle, String articleContent) {
+    @PostMapping("/new_article")
+    public String newArticle(@RequestHeader(value = "Authorization", required = false) String token,
+                             @RequestParam("articleTitle") String articleTitle,
+                             @RequestParam("articleContent") String articleContent) {
         tokenInfo = JWTUtils.verifyToken(token);
         if ("false".equals(tokenInfo.get("tokenJudge"))) {
             return null;
@@ -36,5 +38,18 @@ public class PublishController {
             return null;
         }
         return publishService.toDeleteArticle(articleID, tokenInfo.get("userName"));
+    }
+
+    @GetMapping("/showAll")
+    public List<Article> showAllArticle(@RequestHeader(value = "Authorization", required = false) String token) {
+        System.out.println("show all articles!");
+        System.out.println(token);
+
+        tokenInfo = JWTUtils.verifyToken(token);
+        if ("false".equals(tokenInfo.get("tokenJudge"))) {
+            return null;
+        }
+//        System.out.println(publishService.toShowAllArticle());
+        return publishService.toShowAllArticle();
     }
 }

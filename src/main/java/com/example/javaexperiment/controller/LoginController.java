@@ -1,14 +1,7 @@
 package com.example.javaexperiment.controller;
 
-import com.example.javaexperiment.models.User;
 import com.example.javaexperiment.service.LoginService;
-import com.example.javaexperiment.utils.Utilities;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -18,12 +11,16 @@ import java.util.HashMap;
  */
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/users")
 public class LoginController {
     static final LoginService loginService = new LoginService();
 
-    @GetMapping(value = "/signup")
-    public HashMap<String, String> signUp(String userName, String password) {
+    @PostMapping(value = "/signup")
+    public HashMap<String, String> signUp(@RequestParam("userName") String userName,
+                                          @RequestParam("password") String password) {
+        System.out.println(userName + "  " + password);
+
         String res = loginService.toSignUp(userName, password);
 
         if ("error".equals(res)) {
@@ -43,11 +40,13 @@ public class LoginController {
         HashMap<String, String> tokenResult = new HashMap<>(2);
         tokenResult.put("result", "ok");
         tokenResult.put("token", res);
+        System.out.println(tokenResult);
         return tokenResult;
     }
 
-    @GetMapping(value = "/login")
-    public HashMap<String, String> login(String userName, String password) {
+    @PostMapping(value = "/login")
+    public HashMap<String, String> login(@RequestParam("userName") String userName,
+                                         @RequestParam("password") String password) {
         String res = loginService.toLogin(userName, password);
 
         if ("user name not found".equals(res)) {
@@ -61,7 +60,7 @@ public class LoginController {
             wrongResult.put("result", "not right");
             return wrongResult;
         }
-
+        System.out.println(res);
         //* 以上两种情况都不满足的时候，res的值为token
         HashMap<String, String> tokenResult = new HashMap<>(2);
         tokenResult.put("result", "ok");
