@@ -28,19 +28,6 @@ public abstract class UserDao {
         return true;
     }
 
-//    public boolean createUser(List<User> users) {
-//        for (User user:users) {
-//            if (mongoOperations.findById(user.getUserName(), User.class) != null) {
-//                System.out.println(user.toString() + " is in MongoDB");
-//                return false;
-//            }
-//        }
-//        for (User user:users) {
-//            mongoOperations.insert(user);
-//        }
-//        return true;
-//    }
-
     public static boolean deleteUser(User user) {
         DeleteResult deleteResult = mongoOperations.remove(user);
         return true;

@@ -15,8 +15,9 @@ import java.util.List;
 public class Article {
     @MongoId
     private String articleID;
-    private String articleText;
-    private String writeName;
+    private String writerName;
+    private String articleTitle;
+    private String articleContent;
     private Date createTime;
     private Date updateTime;
     private Integer visitedNum;
@@ -24,10 +25,11 @@ public class Article {
     private List<Comment> commentList;
     private Integer commentsNum;
 
-    public Article(String writeName, String articleText, Integer articlesNum) {
-        this.articleID = writeName + articlesNum.toString();
-        this.articleText = articleText;
-        this.writeName = writeName;
+    public Article(String writerName, String articleTitle, String articleContent, Integer articlesNum) {
+        this.articleID = writerName + articlesNum.toString();
+        this.writerName = writerName;
+        this.articleContent = articleContent;
+        this.articleTitle = articleTitle;
         this.createTime = new Date(System.currentTimeMillis());
         this.updateTime = new Date(System.currentTimeMillis());
         this.visitedNum = 0;
