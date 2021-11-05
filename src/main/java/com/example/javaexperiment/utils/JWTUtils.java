@@ -49,18 +49,21 @@ public class JWTUtils {
     /**
      * 检验token是否正确
      */
-    public static Boolean verifyToken(String token){
+    public static HashMap<String, String> verifyToken(String token){
+        HashMap<String, String> res = new HashMap<>(3);
         try {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
-            String userName = jwt.getClaim("userName").toString();
-            String password = jwt.getClaim("password").toString();
-            return true;
-//            return jwt.getClaim("userName").toString() + jwt.getClaim("password").toString();
+            res.put("tokenJudge", "ok");
+            res.put("userName", jwt.getClaim("userName").toString());
+            res.put("password", jwt.getClaim("password").toString());
         } catch (JWTVerificationException e){
             e.printStackTrace();
-            return false;
+            res.put("tokenJudge", "false");
+            res.put("userName", null);
+            res.put("password", null);
         }
+        return res;
     }
 }
